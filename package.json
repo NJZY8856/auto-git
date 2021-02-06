@@ -1,0 +1,75 @@
+{
+	"name": "auto-git",
+	"displayName": "auto-git",
+	"description": "git auto commit",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.52.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:auto-git.helloWorld",
+		"onCommand:auto-git.autoCommit"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "auto-git.helloWorld",
+				"title": "Hello World"
+			},
+			{
+				"command": "auto-git.autoCommit",
+				"title": "auto-git",
+				"icon": {
+					"dark": "./image/git.svg",
+					"light": "./image/git.svg"
+				}
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "auto-git.autoCommit",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "auto-git.autoCommit",
+					"when": "false",
+					"group": "navigation"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "auto-git.autoCommit",
+					"group": "navigation"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "auto-git.autoCommit"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.52.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^12.11.7",
+		"eslint": "^7.15.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"typescript": "^4.1.2",
+		"vscode-test": "^1.4.1"
+	}
+}
