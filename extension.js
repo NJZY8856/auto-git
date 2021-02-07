@@ -17,7 +17,7 @@ async function execGitAdd() {
     return  execFilePromise('git', ['commit', '-m','gitAutoCommit'])
   }
   ).then(() => {
-    return execFilePromise('git', ['push', 'origin', `HEAD:refs/for/${branch}`] );
+    return execFilePromise('git', ['push', '-u', 'origin', branch] );
   }).catch((err) => {
 		console.log(err);
 		vscode.window.showInformationMessage(err);
