@@ -1,28 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-const { execFile,execSync } = require('child_process');
-const util = require('util');
-
-const execFilePromise = util.promisify(execFile);
-const branch = execSync('git rev-parse --abbrev-ref HEAD').toString().replace(/\s+/, '')
-
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-
-async function execGitAdd() {
-  return new Promise(() => {
-    return  execFilePromise('git', ['add', '.']);
-  }).then(() => {
-    return  execFilePromise('git', ['commit', '-m','gitAutoCommit'])
-  }
-  ).then(() => {
-    return execFilePromise('git', ['push', '-u', 'origin', branch] );
-  }).catch((err) => {
-		console.log(err);
-		vscode.window.showInformationMessage(err);
-})
-}
+const { rejects } = require('assert');
+const gitPush = require('./src/gitPush');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -43,10 +23,10 @@ function activate(context) {
 		vscode.window.showInformationMessage('Hello World from auto-git!');
 	});
 
-	let autoGit = vscode.commands.registerCommand('auto-git.autoCommit', function() {
+	let autoGit = vscode.commands.registerCommand('auto-git.autoCommit', async function() {
 		vscode.window.showInformationMessage('menu menu');
-		execGitAdd();
-		vscode.window.showInformationMessage('提交成功')
+		await gitPush();
+		vscode.window.showInformationMessage('提交成功');
 	})
 
 	context.subscriptions.push(disposable);
