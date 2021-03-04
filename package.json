@@ -2,7 +2,7 @@
 	"name": "auto-git",
 	"displayName": "auto-git",
 	"description": "git auto commit",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
