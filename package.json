@@ -11,25 +11,29 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:auto-git.helloWorld",
-		"onCommand:auto-git.autoCommit"
+		"onCommand:auto-git.autoCommit",
+		"onCommand:auto-git.autoMergeWithoutCommit"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "auto-git.helloWorld",
-				"title": "Hello World"
+				"command": "auto-git.autoCommit",
+				"title": "CommitWithMessage"
 			},
 			{
-				"command": "auto-git.autoCommit",
-				"title": "auto-git"
+				"command": "auto-git.autoMergeWithoutCommit",
+				"title": "MergeWithoutCommit"
 			}
 		],
 		"menus": {
 			"view/title": [
 				{
 					"command": "auto-git.autoCommit",
+					"group": "navigation"
+				},
+				{
+					"command": "auto-git.autoMergeWithoutCommit",
 					"group": "navigation"
 				}
 			],
@@ -38,17 +42,29 @@
 					"command": "auto-git.autoCommit",
 					"when": "false",
 					"group": "navigation"
+				},
+				{
+					"command": "auto-git.autoMergeWithoutCommit",
+					"when": "false",
+					"group": "navigation"
 				}
 			],
 			"explorer/context": [
 				{
 					"command": "auto-git.autoCommit",
 					"group": "navigation"
+				},
+				{
+					"command": "auto-git.autoMergeWithoutCommit",
+					"group": "navigation"
 				}
 			],
 			"editor/context": [
 				{
 					"command": "auto-git.autoCommit"
+				},
+				{
+					"command": "auto-git.autoMergeWithoutCommit"
 				}
 			]
 		}

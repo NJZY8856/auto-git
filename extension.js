@@ -3,6 +3,7 @@
 const vscode = require('vscode');
 const { rejects } = require('assert');
 const gitPush = require('./src/gitPush');
+const mergeWithoutCommit = require('./src/gitmergeWithoutCommit');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -23,14 +24,19 @@ function activate(context) {
 		vscode.window.showInformationMessage('Hello World from auto-git!');
 	});
 
-	let autoGit = vscode.commands.registerCommand('auto-git.autoCommit', async function() {
-		vscode.window.showInformationMessage('menu menu');
+	// 自动提交并push（带commitMessage）
+	let autoCommitWidthMessage = vscode.commands.registerCommand('auto-git.autoCommit', async function() {
 		await gitPush();
 		vscode.window.showInformationMessage('提交成功');
+	});
+
+	let autoMergeWithoutCommit = vscode.commands.registerCommand('auto-git.autoMergeWithoutCommit', async function() {
+		await mergeWithoutCommit();
 	})
 
 	context.subscriptions.push(disposable);
-	context.subscriptions.push(autoGit);
+	context.subscriptions.push(autoCommitWidthMessage);
+	context.subscriptions.push(autoMergeWithoutCommit);
 }
 
 // this method is called when your extension is deactivated

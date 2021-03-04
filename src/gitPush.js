@@ -1,49 +1,24 @@
 const vscode = require('vscode');
-const { execFile,execSync } = require('child_process');
+const { execSync } = require('child_process');
+const execute = require('./execute');
 
 function validateCommitMessage(message) {
 	return message !== undefined && message !== null && message.trim() !== ''
 }
 
 async function gitPush() {
-  return new Promise((resolve, reject) => {
-		vscode.window.showInformationMessage('8888999')
-		execFile('git', ['add', '.'],(error, stdout, stderr) => {
-			if (error) {
-					console.error( 'stderr',  stderr);
-					reject(stdout);
-			}
-			resolve(stdout);
-		});
-  }).then(async (resolve, reject) => {
-		vscode.window.showInformationMessage('8889999877')
-		const commitMessage = await vscode.window.showInputBox({
-      ignoreFocusOut: true,
-      prompt: 'Git commit message ?',
-      validateInput: commitMessage => !validateCommitMessage(commitMessage)
-        ? `You can't commit with an empty commit message. Write something or press ESC to cancel.`
-        : undefined
-		})
-		vscode.window.showInformationMessage('888',commitMessage)
-    execFile('git', ['commit', '-m',commitMessage],(error, stdout, stderr) => {
-			if(error) {
-				reject(stderr);
-			}
-			resolve(stdout);
-		});
-  }
-  ).then((resolve, reject) => {
-		const branch = execSync('git rev-parse --abbrev-ref HEAD').toString().replace(/\s+/, '');
-		execFile('git', ['push', 'origin', `HEAD:refs/for/${branch}`],(error, stdout, stderr) => {
-			if(error) {
-				reject(stderr);
-			}
-			resolve(stdout);
-		})
-  }).catch((err) => {
-		console.log(err);
-		vscode.window.showInformationMessage(err);
-});
+  await execute('git', ['add','.']);
+  const commitMessage = await vscode.window.showInputBox({
+    ignoreFocusOut: true,
+    prompt: 'Git commit message ?',
+    validateInput: commitMessage => !validateCommitMessage(commitMessage)
+      ? `You can't commit with an empty commit message. Write something or press ESC to cancel.`
+      : undefined
+  });
+  await execute('git', ['commit', '-m', commitMessage]);
+  const branch = await execute('git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+  const data = await execute('git', ['push', 'origin', `HEAD:refs/for/${branch.toString().replace(/\s+/, '')}`]);
+  vscode.window.showInformationMessage('提交成功',data);
 }
 
 module.exports = gitPush;
